@@ -315,5 +315,66 @@
 <p><span><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/mqTisFag1J4" title="YouTube video player" width="560"></iframe></span></p>
 <div class="d-flex flex-justify-between flex-content-center"><br/><span>40823214 直播教學影片：</span></div>
 <p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/GUUKSgN93eI" title="YouTube video player" width="560"></iframe> <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/gZd9KlVS9BI" title="YouTube video player" width="560"></iframe></p>
-<h2>stage3模擬</h2><h1>直播影片</h1>
+<h2>stage3模擬</h2>
+<p>stage3模擬，但模擬過程中，一開始的擊球機構沒控制好的話會把球彈到後面去，這邊還需要修改一下，這次是用lua的程式碼下去，可以用鍵盤控制，分別是q、p、a、;、z、.。</p>
+<p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/UeFtFcbUtLI" title="YouTube video player" width="560"></iframe></p>
+<p></p>
+<pre class="brush:lua;auto-links:false;toolbar:false" contenteditable="false">import sim as vrep
+import math
+import random
+import time
+import keyboard
+ 
+print ('Start')
+ 
+# Close eventual old connections
+vrep.simxFinish(-1)
+# Connect to V-REP remote server
+clientID = vrep.simxStart('127.0.0.1', 19997, True, True, 5000, 5)
+  
+if clientID !=-1:
+    print ('Connected to remote API server')
+   
+    res = vrep.simxAddStatusbarMessage(
+        clientID, "40823222",
+        vrep.simx_opmode_oneshot)
+          
+    if res not in (vrep.simx_return_ok, vrep.simx_return_novalue_flag):
+        print("Could not add a message to the status bar.")
+          
+    opmode = vrep.simx_opmode_oneshot_wait
+     
+    vrep.simxStartSimulation(clientID, opmode)
+    ret,shaft1=vrep.simxGetObjectHandle(clientID,"joint1",opmode)
+    ret,shaft2=vrep.simxGetObjectHandle(clientID,"joint2",opmode)
+    ret,shaft3=vrep.simxGetObjectHandle(clientID,"joint3",opmode)
+
+    while True:
+        if keyboard.is_pressed("q"):
+            vrep.simxSetJointTargetPosition(clientID,shaft1,-200,opmode)
+            print("q")
+            
+        if keyboard.is_pressed("p"):
+            vrep.simxSetJointTargetPosition(clientID,shaft1,200,opmode)
+            print("p")
+            
+        if keyboard.is_pressed("a"):
+            vrep.simxSetJointTargetPosition(clientID,shaft2,90,opmode)
+            print("a")
+
+        if keyboard.is_pressed(";"):
+            vrep.simxSetJointTargetPosition(clientID,shaft2,0,opmode)
+            print(";")
+            
+        if keyboard.is_pressed("z"):
+            vrep.simxSetJointTargetPosition(clientID,shaft3,90,opmode)
+            print("z")
+
+        if keyboard.is_pressed("."):
+            vrep.simxSetJointTargetPosition(clientID,shaft3,0,opmode)
+            print(".")            
+else:
+    print ('Failed connecting to  remote API server')
+    print ('End')</pre>
+<p></p><h1>直播影片</h1>
 <p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/ieQEChlieB8" title="YouTube video player" width="560"></iframe></p>
