@@ -134,9 +134,66 @@ img.add_border {
           
         </header>
     <div id="tipue_search_content">Task 1 << <a href='Task 1.html'>Previous</a> <a href='RoboDK.html'>Next</a> >> RoboDK<br /><h1>Task 2</h1>
+<p>使用api鍵盤控制。</p>
 <p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/YSzPGjvDT2w" title="YouTube video player" width="560"></iframe></p>
-<p></p>
-<br />Task 1 << <a href='Task 1.html'>Previous</a> <a href='RoboDK.html'>Next</a> >> RoboDK</div>
+<pre class="brush:html;auto-links:false;toolbar:false" contenteditable="false">import sim as vrep
+import math
+import random
+import time
+import keyboard
+ 
+print ('Start')
+ 
+# Close eventual old connections
+vrep.simxFinish(-1)
+# Connect to V-REP remote server
+clientID = vrep.simxStart('127.0.0.1', 19997, True, True, 5000, 5)
+  
+if clientID !=-1:
+    print ('Connected to remote API server')
+   
+    res = vrep.simxAddStatusbarMessage(
+        clientID, "40823222",
+        vrep.simx_opmode_oneshot)
+          
+    if res not in (vrep.simx_return_ok, vrep.simx_return_novalue_flag):
+        print("Could not add a message to the status bar.")
+          
+    opmode = vrep.simx_opmode_oneshot_wait
+     
+    vrep.simxStartSimulation(clientID, opmode)
+    ret,shaft1=vrep.simxGetObjectHandle(clientID,"shaft_1",opmode)
+    ret,shaft2=vrep.simxGetObjectHandle(clientID,"shaft_2",opmode)
+    ret,shaft3=vrep.simxGetObjectHandle(clientID,"shaft_3",opmode)
+
+    while True:
+        if keyboard.is_pressed("q"):
+            vrep.simxSetJointTargetVelocity(clientID,shaft1,0.15,opmode)
+            print("w")
+            
+        if keyboard.is_pressed("w"):
+            vrep.simxSetJointTargetVelocity(clientID,shaft1,0,opmode)
+            print("s")
+            
+        if keyboard.is_pressed("a"):
+            vrep.simxSetJointTargetVelocity(clientID,shaft2,0.5,opmode)
+            print("a")
+
+        if keyboard.is_pressed("s"):
+            vrep.simxSetJointTargetVelocity(clientID,shaft2,0,opmode)
+            print("b")
+            
+        if keyboard.is_pressed("z"):
+            vrep.simxSetJointTargetVelocity(clientID,shaft3,0.3,opmode)
+            print("c")
+
+        if keyboard.is_pressed("x"):
+            vrep.simxSetJointTargetVelocity(clientID,shaft3,0,opmode)
+            print("z")            
+else:
+    print ('Failed connecting to  remote API server')
+    print ('End')</pre>
+<p><br/><br/></p><br />Task 1 << <a href='Task 1.html'>Previous</a> <a href='RoboDK.html'>Next</a> >> RoboDK</div>
         
     <!-- footer -->
       <div class="container">
